@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>色が変わるボタン</title>
+    <style>
+    .layout-selector-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+
+    .layout-selector {
+        width: 20%; /* リストボックスの幅を大きく */
+        font-size: 1.5em; /* フォントサイズを大きく */
+    }
+
+    .button-container {
+        display: grid;
+        gap: 0; /* ボタンの間の隙間をなくす */
+        width: 300px; /* グリッド全体の幅を調整 */
+        margin: auto;
+    }
+
+    .color-change-button {
+        padding: 0;
+        width: 100%;  /* 各セルの幅に合わせる */
+        aspect-ratio: 1 / 1; /* 正方形にする */
+        font-size: 2em; /* ボタン幅の半分程度の大きさに設定 */
+        font-weight: bold; /* 太字に設定 */
+        background-color: #FFFFFF; /* 白 */
+        color: black;
+        border: 1px solid #000000;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin: 0; /* ボタンの間の隙間をなくす */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .clear-button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .clear-button {
+        width: 100%; /* 3列分の幅 */
+        max-width: 300px; /* 最大幅を3列分に合わせる */
+        padding: 10px;
+        font-size: 2em; /* 文字の大きさを調整 */
+        font-weight: bold; /* 太字に設定 */
+        background-color: #FFAAAA; /* 淡い赤色 */
+        color: white;
+        border: 1px solid #000000;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        text-align: center;
+    }
+
+    /* スマートフォン向けのスタイル */
+    @media (max-width: 600px) {
+        .button-container {
+            width: 100%; /* グリッド全体の幅を100%に */
+        }
+
+        .color-change-button {
+            font-size: 1.5em; /* フォントサイズを調整 */
+            padding: 0;
+            margin: 5px; /* ボタン間に少し余白を追加 */
+        }
+
+        .clear-button {
+            max-width: 100%; /* 最大幅を100%に */
+            margin-top: 5px; /* 少し余白を追加 */
+        }
+    }
+
+    </style>
+</head>
+<body>
+    <div class="layout-selector-container">
+        <label for="layout-select">マス数変更:</label>
+        <select id="layout-select" class="layout-selector" onchange="updateLayout()">
+            <option value="3x2">3×2</option>
+            <option value="2x1">2×1</option>
+            <option value="3x1">3×1</option>
+            <option value="4x1">4×1</option>
+            <option value="2x2">2×2</option>
+            <option value="4x2">4×2</option>
+        </select>
+    </div>
+    <div class="button-container" id="button-container">
+        <!-- ボタンがここに追加されます -->
+    </div>
+    <div class="clear-button-container">
+        <button class="clear-button" onclick="clearColors()">クリア</button>
+    </div>
+    <script>
+        const layouts = {
+            '3x2': ['A', 'B', 'C', 'D', 'E', 'F'],
+            '2x1': ['A', 'B'],
+            '3x1': ['A', 'B', 'C'],
+            '4x1': ['A', 'B', 'C', 'D'],
+            '2x2': ['A', 'B', 'C', 'D'],
+            '4x2': ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+        };
+
+        function updateLayout() {
+            const select = document.getElementById('layout-select');
+            const layout = select.value;
+            const buttonContainer = document.getElementById('button-container');
+            buttonContainer.innerHTML = '';
+            buttonContainer.style.gridTemplateColumns = `repeat(${layout.split('x')[1]}, 1fr)`;
+            buttonContainer.style.gridTemplateRows = `repeat(${layout.split('x')[0]}, 1fr)`;
+            layouts[layout].forEach(letter => {
+                const button = document.createElement('button');
+                button.className = 'color-change-button';
+                button.innerHTML = letter;
+                button.onclick = function() { changeColor(button) };
+                buttonContainer.appendChild(button);
+            });
+            // レイアウト変更時にクリア
+            clearColors();
+            updateClearButtonState();
+        }
+
+        function changeColor(button) {
+            const colors = ['#FFFFFF', '#FFD700']; // 白と濃い黄色
+            let currentColor = window.getComputedStyle(button).backgroundColor;
+            let hexColor = rgbToHex(currentColor);
+            let newColorIndex = (colors.indexOf(hexColor) + 1) % colors.length;
+            button.style.backgroundColor = colors[newColorIndex];
+            updateClearButtonState();
+        }
+
+        function rgbToHex(rgb) {
+            let result = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+            if (result) {
+                return "#" + ((1 << 24) + (parseInt(result[1]) << 16) + (parseInt(result[2]) << 8) + parseInt(result[3])).toString(16).slice(1).toUpperCase();
+            }
+            return rgb;
+        }
+
+        function clearColors() {
+            let buttons = document.querySelectorAll('.color-change-button');
+            buttons.forEach(button => {
+                button.style.backgroundColor = '#FFFFFF'; // ボタンの色を白にリセット
+            });
+            updateClearButtonState();
+        }
+
+        function updateClearButtonState() {
+            const buttons = document.querySelectorAll('.color-change-button');
+            const clearButton = document.querySelector('.clear-button');
+            const hasColoredButton = Array.from(buttons).some(button => button.style.backgroundColor !== 'rgb(255, 255, 255)');
+
+            if (hasColoredButton) {
+                clearButton.disabled = false;
+                clearButton.style.backgroundColor = '#FFAAAA'; // 有効時の色
+            } else {
+                clearButton.disabled = true;
+                clearButton.style.backgroundColor = '#A9A9A9'; // 無効時の色（灰色）
+            }
+        }
+
+        // 初期レイアウトを設定
+        document.getElementById('layout-select').value = '3x2';
+        updateLayout();
+    </script>
+</body>
+</html>
