@@ -5,79 +5,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>色が変わるボタン</title>
     <style>
-    .layout-selector-container {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        margin-bottom: 10px;
-    }
-
-    .layout-selector {
-        width: 20%; /* リストボックスの幅を大きく */
-        font-size: 1.5em; /* フォントサイズを大きく */
-    }
-
-    .button-container {
-        display: grid;
-        gap: 0; /* ボタンの間の隙間をなくす */
-        width: 300px; /* グリッド全体の幅を調整 */
-        margin: auto;
-    }
-
-    .color-change-button {
-        padding: 0;
-        width: 100%;  /* 各セルの幅に合わせる */
-        aspect-ratio: 1 / 1; /* 正方形にする */
-        font-size: 2em; /* ボタン幅の半分程度の大きさに設定 */
-        font-weight: bold; /* 太字に設定 */
-        background-color: #FFFFFF; /* 白 */
-        color: black;
-        border: 1px solid #000000;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        margin: 0; /* ボタンの間の隙間をなくす */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .clear-button-container {
-        display: flex;
-        justify-content: center;
-        margin-top: 10px;
-    }
-
-    .clear-button {
-        width: 100%; /* 3列分の幅 */
-        max-width: 300px; /* 最大幅を3列分に合わせる */
-        padding: 10px;
-        font-size: 2em; /* 文字の大きさを調整 */
-        font-weight: bold; /* 太字に設定 */
-        background-color: #FFAAAA; /* 淡い赤色 */
-        color: white;
-        border: 1px solid #000000;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        text-align: center;
-    }
-
-    /* スマートフォン向けのスタイル */
-    @media (max-width: 600px) {
+        .layout-selector-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        
+        .layout-selector {
+            width: 20%; /* リストボックスの幅を大きく */
+            font-size: 1.5em; /* フォントサイズを大きく */
+        }
+        
         .button-container {
-            width: 100%; /* グリッド全体の幅を100%に */
+            display: grid;
+            gap: 0; /* ボタンの間の隙間をなくす */
+            width: 300px; /* グリッド全体の幅を調整 */
+            margin: auto;
         }
-
+        
         .color-change-button {
-            font-size: 1.5em; /* フォントサイズを調整 */
             padding: 0;
+            width: 100%;  /* 各セルの幅に合わせる */
+            aspect-ratio: 1 / 1; /* 正方形にする */
+            font-size: 2em; /* ボタン幅の半分程度の大きさに設定 */
+            font-weight: bold; /* 太字に設定 */
+            background-color: #FFFFFF; /* 白 */
+            color: black;
+            border: 1px solid #000000;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 0; /* ボタンの間の隙間をなくす */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-
+        
+        .clear-button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        
         .clear-button {
-            max-width: 100%; /* 最大幅を100%に */
-            margin-top: 5px; /* 少し余白を追加 */
+            width: 100%; /* 3列分の幅 */
+            max-width: 300px; /* 最大幅を3列分に合わせる */
+            padding: 10px;
+            font-size: 2em; /* 文字の大きさを調整 */
+            font-weight: bold; /* 太字に設定 */
+            background-color: #FFAAAA; /* 淡い赤色 */
+            color: white;
+            border: 1px solid #000000;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-align: center;
         }
-    }
-
+        
+        /* スマートフォン向けのスタイル */
+        @media (max-width: 600px) {
+            .button-container {
+                width: 100%; /* グリッド全体の幅を100%に */
+                gap: 5px; /* ボタン間に少し余白を追加 */
+            }
+        
+            .color-change-button {
+                font-size: 1em; /* フォントサイズを調整 */
+                padding: 0;
+                height: calc(25vh - 20px); /* ビューポート高さに基づいてボタンサイズを調整 */
+                margin: 0; /* ボタン間の余白 */
+            }
+        
+            .clear-button {
+                max-width: 100%; /* 最大幅を100%に */
+                height: calc(25vh - 20px); /* ビューポート高さに基づいてボタンサイズを調整 */
+                font-size: 1.5em; /* フォントサイズを調整 */
+                margin-top: 5px; /* 少し余白を追加 */
+            }
+        
+            .layout-selector {
+                width: 40%; /* リストボックスの幅を少し小さく */
+                font-size: 1.2em; /* フォントサイズを少し小さく */
+            }
+        }
     </style>
 </head>
 <body>
